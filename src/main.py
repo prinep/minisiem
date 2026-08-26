@@ -12,7 +12,11 @@ for log in logs:
     event = parse_log(log)
 
     if event:
-        alert = detector.analyze(event)
+        alerts = detector.analyze(event)
 
-        if alert:
-            print("ALERT:", alert)
+        for alert in alerts:
+            print("ALERT:", alert.message)
+            print("Severity:", alert.severity)
+            print("IP:", alert.ip)
+            print("Rule:", alert.rule)
+            print()
