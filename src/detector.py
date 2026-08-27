@@ -58,11 +58,34 @@ class DetectionEngine:
 
         return None
 
+    def check_path_traversal(self, event):
+        if event.event.startswith("GET "):
+            path = event.event[4:]
+
+            suspicious_paths = [
+                "/etc/passwd",
+                "/etc/shadow",
+                "../",
+                "..\\"
+            ]
+
+            for suspicious in suspicious_paths:
+                if suspicious in path:
+                    return Alert(
+                        "Possible path traversal attack",
+                        "HIGH",
+                        event.ip,
+                        "PATH_TRAVERSAL"
+                    )
+
+        return None
+
     def analyze(self, event):
         checks = [
             self.check_brute_force,
             self.check_brute_force_success,
-            self.check_unusual_login_time
+            self.check_unusual_login_time,
+            self.check_path_traversal
         ]
 
         alerts = []

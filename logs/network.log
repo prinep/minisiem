@@ -1,0 +1,6 @@
+2026-08-27 10:00:01 network: connection from 10.0.0.20 to port 22
+2026-08-27 10:00:02 network: connection from 10.0.0.20 to port 23
+2026-08-27 10:00:03 network: connection from 10.0.0.20 to port 25
+2026-08-27 10:00:04 network: connection from 10.0.0.20 to port 53
+2026-08-27 10:00:05 network: connection from 10.0.0.20 to port 80
+2026-08-27 10:00:06 network: connection from 10.0.0.20 to port 443

@@ -29,4 +29,17 @@ def parse_log(log):
             web_match.group(3)
         )
 
+    network_match = re.search(
+        r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) network: connection from (\d+\.\d+\.\d+\.\d+) to port (\d+)",
+        log
+    )
+
+    if network_match:
+        return LogEvent(
+            network_match.group(1),
+            f"PORT {network_match.group(3)}",
+            "network",
+            network_match.group(2)
+        )
+
     return None
