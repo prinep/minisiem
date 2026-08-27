@@ -81,4 +81,27 @@ class Database:
 
         return cursor.fetchall()
 
+    def get_statistics(self):
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT COUNT(*) FROM events")
+        total_events = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM alerts")
+        total_alerts = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM alerts WHERE severity = 'HIGH'")
+        high_alerts = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM alerts WHERE severity = 'CRITICAL'")
+        critical_alerts = cursor.fetchone()[0]
+
+        return total_events, total_alerts, high_alerts, critical_alerts
+    def get_alert_count(self):
+                    cursor = self.connection.cursor()
+    
+                    cursor.execute("SELECT COUNT(*) FROM alerts")
+    
+                    return cursor.fetchone()[0]
+
         

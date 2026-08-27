@@ -4,13 +4,16 @@ class Dashboard:
 
     def show_menu(self):
         while True:
-            print("\n================================")
-            print("           MiniSIEM")
-            print("================================")
-            print("1. View recent events")
-            print("2. View alerts")
-            print("3. Show statistics")
-            print("4. Exit")
+            alert_count = self.database.get_alert_count()
+            print("\n" + "=" * 50)
+            print("                 MINISIEM")
+            print("          Security Monitoring Tool")
+            print("=" * 50)
+            print(f"Active Alerts: {alert_count}")
+            print("\n[1] View Recent Events")
+            print("[2] View Security Alerts")
+            print("[3] Security Statistics")
+            print("[4] Exit")
 
             choice = input("\nChoose an option: ")
 
@@ -41,6 +44,15 @@ class Dashboard:
                         f"IP: {alert[2]} | "
                         f"Rule: {alert[3]}"
                     )
+            elif choice == "3":
+                stats = self.database.get_statistics()
+
+                print("\n--- Security Statistics ---")
+                print("Total events:", stats[0])
+                print("Total alerts:", stats[1])
+                print("High alerts:", stats[2])
+                print("Critical alerts:", stats[3])
 
             else:
                 print("Invalid option.")
+        
