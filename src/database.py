@@ -57,6 +57,28 @@ class Database:
             alert.rule
         ))
 
-        self.connection.commit()
+    def get_recent_events(self):
+        cursor = self.connection.cursor()
+
+        cursor.execute("""
+            SELECT timestamp, event, username, ip
+            FROM events
+            ORDER BY id DESC
+            LIMIT 10
+        """)
+
+        return cursor.fetchall()
+
+    def get_alerts(self):
+        cursor = self.connection.cursor()
+
+        cursor.execute("""
+            SELECT message, severity, ip, rule
+            FROM alerts
+            ORDER BY id DESC
+            LIMIT 20
+        """)
+
+        return cursor.fetchall()
 
         

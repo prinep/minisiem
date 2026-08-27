@@ -1,6 +1,7 @@
 from parser import parse_log
 from detector import DetectionEngine
 from database import Database
+from dashboard import Dashboard
 
 
 detector = DetectionEngine()
@@ -27,3 +28,5 @@ for log in logs:
             print("IP:", alert.ip)
             print("Rule:", alert.rule)
             print()
+dashboard = Dashboard(database)
+dashboard.show_menu()
