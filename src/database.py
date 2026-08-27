@@ -64,7 +64,7 @@ class Database:
             SELECT timestamp, event, username, ip
             FROM events
             ORDER BY id DESC
-            LIMIT 10
+            LIMIT 20
         """)
 
         return cursor.fetchall()

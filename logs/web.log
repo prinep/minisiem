@@ -1,0 +1,5 @@
+2026-08-27 09:15:02 web: GET /login from 10.0.0.5
+2026-08-27 09:15:05 web: GET /admin from 10.0.0.5
+2026-08-27 09:15:08 web: GET /admin from 10.0.0.5
+2026-08-27 09:15:12 web: GET /config from 10.0.0.5
+2026-08-27 09:15:15 web: GET /etc/passwd from 10.0.0.5
