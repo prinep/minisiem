@@ -8,6 +8,8 @@ class DetectionEngine:
         self.brute_force_ips = set()
         self.scanned_ports = {}
         self.port_scan_alerted = set()
+        self.successful_logins = {}
+        self.incidents = {}
 
     def check_brute_force(self, event):
         if event.event != "Failed":
@@ -108,6 +110,19 @@ class DetectionEngine:
                 )
 
         return None
+    def correlate_alert(self, alert):
+        ip = alert.ip
+
+        if ip not in self.incidents:
+            self.incidents[ip] = {
+                "alerts": [],
+                "risk_score": 0
+            }
+
+        self.incidents[ip]["alerts"].append(alert)
+        self.incidents[ip]["risk_score"] += alert.risk_score
+
+        return self.incidents[ip]
 
     def analyze(self, event):
         checks = [

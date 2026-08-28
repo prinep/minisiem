@@ -25,6 +25,10 @@ for log_file in log_files:
                 for alert in alerts:
 
                     database.save_alert(alert)
+                    incident = detector.correlate_alert(alert)
+
+                    print("Incident Risk:", incident["risk_score"])
+                    print("Alerts in Incident:", len(incident["alerts"]))
                     
                     print("ALERT:", alert.message)
                     print("Severity:", alert.severity)
@@ -32,5 +36,5 @@ for log_file in log_files:
                     print("Rule:", alert.rule)
                     print("Risk Score:", alert.risk_score)
                     print()
-        dashboard = Dashboard(database)
-        dashboard.show_menu()
+dashboard = Dashboard(database)
+dashboard.show_menu()
