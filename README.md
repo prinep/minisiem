@@ -1,18 +1,20 @@
-# MiniSIEM
+# 🛡️ MiniSIEM
 
-A lightweight Security Information and Event Management (SIEM) system built with Python.
+A lightweight Security Information and Event Management (SIEM) system built with Python for log analysis, threat detection, alerting, and incident correlation.
 
 ## Features
 
 - Parses SSH, web, and network logs
 - Detects brute-force attacks
 - Detects successful logins after brute-force attempts
-- Detects suspicious path traversal requests
+- Detects unusual login times
+- Detects path traversal attempts
 - Detects potential port scans
-- Assigns risk scores to security alerts
+- Assigns risk scores to detected threats
 - Correlates alerts by source IP
-- Stores events and alerts using SQLite
-- Provides a CLI dashboard for security analysis
+- Stores events, alerts, and incidents in SQLite
+- Provides a CLI monitoring interface
+- Provides a Streamlit web dashboard
 
 ## Architecture
 
@@ -21,14 +23,12 @@ Log Files
     ↓
 Log Parser
     ↓
-Event Detection Engine
+Detection Engine
     ↓
-Alert Generation
+Alerts + Risk Scoring
     ↓
-Risk Scoring
-    ↓
-Event Correlation
+Incident Correlation
     ↓
 SQLite Database
     ↓
-CLI Dashboard
+CLI / Streamlit Dashboard
