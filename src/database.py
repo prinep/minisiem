@@ -30,10 +30,26 @@ class Database:
             )
         """)
 
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS incidents (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ip TEXT,
+                risk_score INTEGER,
+                alert_count INTEGER
+            )
+        """)
+
     def save_event(self, event):
         cursor = self.connection.cursor()
-
-        
+        cursor.execute("""
+            INSERT INTO events (timestamp, event, username, ip)
+            VALUES (?, ?, ?, ?)
+        """, (
+            event.timestamp,
+            event.event,
+            event.username,
+            event.ip
+        ))
 
         self.connection.commit()
 
@@ -50,6 +66,41 @@ class Database:
             alert.rule,
             alert.risk_score
         ))
+    def save_incident(self, ip, risk_score, alert_count):
+        cursor = self.connection.cursor()
+
+        cursor.execute("""
+            UPDATE incidents
+            SET risk_score = ?, alert_count = ?
+            WHERE ip = ?
+        """, (
+            risk_score,
+            alert_count,
+            ip
+        ))
+
+        if cursor.rowcount == 0:
+            cursor.execute("""
+                INSERT INTO incidents (ip, risk_score, alert_count)
+                VALUES (?, ?, ?)
+            """, (
+                ip,
+                risk_score,
+                alert_count
+            ))
+
+        self.connection.commit()
+
+    def get_incidents(self):
+        cursor = self.connection.cursor()
+
+        cursor.execute("""
+            SELECT ip, risk_score, alert_count
+            FROM incidents
+            ORDER BY risk_score DESC
+        """)
+
+        return cursor.fetchall()
 
     def get_recent_events(self):
         cursor = self.connection.cursor()
