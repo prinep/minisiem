@@ -25,22 +25,15 @@ class Database:
                 message TEXT,
                 severity TEXT,
                 ip TEXT,
-                rule TEXT
+                rule TEXT,
+                risk_score INTEGER
             )
         """)
 
     def save_event(self, event):
         cursor = self.connection.cursor()
 
-        cursor.execute("""
-            INSERT INTO events (timestamp, event, username, ip)
-            VALUES (?, ?, ?, ?)
-        """, (
-            event.timestamp,
-            event.event,
-            event.username,
-            event.ip
-        ))
+        
 
         self.connection.commit()
 
@@ -48,13 +41,14 @@ class Database:
         cursor = self.connection.cursor()
 
         cursor.execute("""
-            INSERT INTO alerts (message, severity, ip, rule)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO alerts (message, severity, ip, rule, risk_score)
+            VALUES (?, ?, ?, ?, ?)
         """, (
             alert.message,
             alert.severity,
             alert.ip,
-            alert.rule
+            alert.rule,
+            alert.risk_score
         ))
 
     def get_recent_events(self):
@@ -73,7 +67,7 @@ class Database:
         cursor = self.connection.cursor()
 
         cursor.execute("""
-            SELECT message, severity, ip, rule
+            SELECT message, severity, ip, rule, risk_score
             FROM alerts
             ORDER BY id DESC
             LIMIT 20

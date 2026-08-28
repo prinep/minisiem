@@ -6,6 +6,8 @@ class DetectionEngine:
         self.failed_attempts = {}
         self.alerted_ips = set()
         self.brute_force_ips = set()
+        self.scanned_ports = {}
+        self.port_scan_alerted = set()
 
     def check_brute_force(self, event):
         if event.event != "Failed":
@@ -26,7 +28,8 @@ class DetectionEngine:
                 "Brute-force attack detected",
                 "HIGH",
                 ip,
-                "BRUTE_FORCE"
+                "BRUTE_FORCE",
+                70
             )
 
         return None
@@ -37,7 +40,8 @@ class DetectionEngine:
                 "Successful login after brute-force attempt",
                 "CRITICAL",
                 event.ip,
-                "BRUTE_FORCE_SUCCESS"
+                "BRUTE_FORCE_SUCCESS",
+                95
             )
 
         return None
@@ -53,7 +57,8 @@ class DetectionEngine:
                 "Login outside normal hours",
                 "MEDIUM",
                 event.ip,
-                "UNUSUAL_LOGIN_TIME"
+                "UNUSUAL_LOGIN_TIME",
+                40
             )
 
         return None
@@ -75,8 +80,32 @@ class DetectionEngine:
                         "Possible path traversal attack",
                         "HIGH",
                         event.ip,
-                        "PATH_TRAVERSAL"
+                        "PATH_TRAVERSAL",
+                        80
                     )
+
+        return None
+
+    def check_port_scan(self, event):
+        if event.event.startswith("PORT "):
+            ip = event.ip
+            port = event.event[5:]
+
+            if ip not in self.scanned_ports:
+                self.scanned_ports[ip] = set()
+
+            self.scanned_ports[ip].add(port)
+
+            if len(self.scanned_ports[ip]) >= 5 and ip not in self.port_scan_alerted:
+                self.port_scan_alerted.add(ip)
+
+                return Alert(
+                    "Possible port scan detected",
+                    "HIGH",
+                    ip,
+                    "PORT_SCAN",
+                    75
+                )
 
         return None
 
@@ -85,7 +114,8 @@ class DetectionEngine:
             self.check_brute_force,
             self.check_brute_force_success,
             self.check_unusual_login_time,
-            self.check_path_traversal
+            self.check_path_traversal,
+            self.check_port_scan
         ]
 
         alerts = []

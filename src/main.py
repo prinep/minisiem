@@ -30,6 +30,7 @@ for log_file in log_files:
                     print("Severity:", alert.severity)
                     print("IP:", alert.ip)
                     print("Rule:", alert.rule)
+                    print("Risk Score:", alert.risk_score)
                     print()
         dashboard = Dashboard(database)
         dashboard.show_menu()

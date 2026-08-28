@@ -38,12 +38,13 @@ class Dashboard:
                 print("\n--- Security Alerts ---")
 
                 for alert in alerts:
-                    print(
+                   print(
                         f"[{alert[1]}] "
                         f"{alert[0]} | "
                         f"IP: {alert[2]} | "
-                        f"Rule: {alert[3]}"
-                    )
+                        f"Rule: {alert[3]} | "
+                        f"Risk: {alert[4]}"
+                 )
             elif choice == "3":
                 stats = self.database.get_statistics()
 
